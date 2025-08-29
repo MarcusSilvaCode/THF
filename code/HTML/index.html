@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linha do Tempo 💖</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+    />
+    <style>
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(100vh) rotate(-45deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.7;
+        }
+        100% {
+          transform: translateY(-10vh) rotate(-45deg);
+          opacity: 0;
+        }
+      }
+      body {
+        font-family: "Georgia", serif;
+        margin: 0;
+        padding: 20px 10px;
+        text-align: center;
+        color: #4a1c40;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: linear-gradient(270deg, #ffe4ec, #f8bbd0, #fce4ec, #f8bbd0);
+        background-size: 800% 800%;
+        animation: gradientShift 20s ease infinite;
+        overflow-x: hidden;
+        position: relative;
+        min-height: 100vh;
+      }
+      .hearts {
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        z-index: -1;
+      }
+      .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(244, 143, 177, 0.6);
+        transform: rotate(-45deg);
+        animation: floatUp linear infinite;
+        opacity: 0.7;
+        filter: drop-shadow(0 0 1px rgba(244, 143, 177, 0.8));
+      }
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: rgba(244, 143, 177, 0.6);
+        border-radius: 50%;
+        top: 0;
+        left: 0;
+      }
+      .heart::before {
+        left: 10px;
+      }
+      .heart::after {
+        top: -10px;
+      }
+      h1 {
+        margin-bottom: 10px;
+        font-family: "Great Vibes", cursive;
+        font-size: 2.8em;
+      }
+      #typing {
+        font-style: italic;
+        margin-bottom: 30px;
+        font-size: 1.2em;
+      }
+      #contador {
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+      .carousel-container {
+        background-color: #d79fb2;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 90vw;
+        text-align: center;
+      }
+      .carousel-image {
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.5s ease;
+        object-fit: contain;
+      }
+      .carousel-date {
+        font-weight: bold;
+        font-size: 1.3em;
+        margin-top: 15px;
+      }
+      .carousel-description {
+        margin-top: 10px;
+        font-size: 1.1em;
+        line-height: 1.4;
+        min-height: 60px;
+      }
+      .buttons {
+        margin-top: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .btn {
+        background-color: #f48fb1;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px 5px;
+        transition: all 0.3s ease;
+        user-select: none;
+      }
+      .btn:hover {
+        background-color: #ec407a;
+        transform: scale(1.05);
+        box-shadow: 0 0 10px #ec407a70;
+      }
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2.2em;
+        }
+        #typing {
+          font-size: 1em;
+        }
+        .carousel-description {
+          font-size: 1em;
+        }
+        .btn {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+        .carousel-container {
+          padding: 15px;
+        }
+        .music-float-btn {
+          top: 12px;
+          right: 12px;
+          padding: 10px 14px;
+          font-size: 15px;
+        }
+      }
+      .music-float-btn {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 1000;
+        box-shadow: 0 2px 12px #ec407a40;
+        padding: 14px 22px;
+        font-size: 18px;
+        border-radius: 50px;
+        background: #f48fb1;
+        color: #fff;
+        border: none;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .music-float-btn:hover {
+        background: #ec407a;
+        transform: scale(1.07);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="hearts"></div>
+
+    <h1>Linha do Tempo do Amor 💞</h1>
+    <div id="typing"></div>
+    <div id="contador"></div>
+
+    <div class="carousel-container">
+      <div id="mediaContainer"></div>
+      <div class="carousel-date" id="carouselDate"></div>
+      <div class="carousel-description" id="carouselDesc"></div>
+      <div class="buttons">
+        <button class="btn" onclick="prev()">⬅️ Anterior</button>
+        <button class="btn" onclick="next()">Próximo ➡️</button>
+      </div>
+    </div>
+
+    <button
+      class="btn music-float-btn"
+      onclick="toggleAudio()"
+      aria-label="Controle de música"
+    >
+      🎵 Ativar Música
+    </button>
+
+    <audio id="musica" loop>
+      <source src="/paste/IMG/sain-music1.mp3" type="audio/mp3" />
+    </audio>
+
+    <script>
+      const momentos = [
+        {
+          tipo: "video",
+          src: "/paste/IMG/video1.mp4",
+          date: "Março 2025",
+          desc: "O começo de tudo. Um olhar, um riso tímido... e o coração disparando pela primeira vez por alguém tão especial.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/im2.jpeg",
+          date: "Abril 2025",
+          desc: "Nosso primeiro passeio em família. Risadas, abraços e a certeza de que estávamos construindo algo lindo juntos.",
+        },
+        {
+          tipo: "video",
+          src: "/paste/IMG/video2.mp4",
+          date: "Abril 2025",
+          desc: "Aquecendo pra um dos rolês mais amaldiçoados que já vivemos juntos kkkkk... mas, juntos, até o caos vira lembrança boa.",
+        },
+        {
+          tipo: "video",
+          src: "/paste/IMG/video3.mp4",
+          date: "Abril 2025",
+          desc: "Momentos pra apresentar pra família. A alegria de compartilhar nosso amor com quem mais amamos.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/img5.jpeg",
+          date: "Maio 2025",
+          desc: "Aquele dia mais que especial, seu aniversário. A felicidade de celebrar a vida com você, meu amor.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/img3.jpeg",
+          date: "Maio 2025",
+          desc: "O dia de conhecer a sua família. A emoção de ser recebido com tanto carinho e amor, como se já fizesse parte da família.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/img7jun.jpg",
+          date: "Junho 2025",
+          desc: "Junho foi leveza. Um mês cheio de momentos doces, risadas sinceras e a certeza de que a felicidade mora nos detalhes.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/img9-jn.jpg",
+          date: "Junho 2025",
+          desc: "Momentos marcantes com ela. Jantazinho à luz de vela (cortaram o gato kkkk) com meu amor.",
+        },
+        {
+          tipo: "video",
+          src: "/paste/IMG/video4.mp4",
+          date: "Julho 2025",
+          desc: "O dia em que fomos feitos de trouxa no Suma, pagando caro por uma comida duvidosa. Mas rir contigo fez valer cada centavo.",
+        },
+        {
+          tipo: "img",
+          src: "/paste/IMG/img8.jpg",
+          date: "Agosto 2025",
+          desc: "O grande dia. O tão esperado pedido de namoro aconteceu. Agora carregamos no dedo a promessa que já carregávamos no coração.",
+        },
+      ];
+
+      let index = 0;
+      const mediaContainer = document.getElementById("mediaContainer");
+      const dateEl = document.getElementById("carouselDate");
+      const descEl = document.getElementById("carouselDesc");
+      const musica = document.getElementById("musica");
+      const musicBtn = document.querySelector(".music-float-btn");
+      let musicaAtiva = false;
+
+      function showMoment(idx) {
+        const moment = momentos[idx];
+        mediaContainer.innerHTML = "";
+        dateEl.style.opacity = 0;
+        descEl.style.opacity = 0;
+
+        let mediaEl;
+        if (moment.tipo === "img") {
+          mediaEl = document.createElement("img");
+          mediaEl.src = moment.src;
+          mediaEl.alt = `Imagem de ${moment.date}`;
+        } else {
+          mediaEl = document.createElement("video");
+          mediaEl.src = moment.src;
+          mediaEl.controls = true;
+          mediaEl.loop = true;
+          mediaEl.muted = true;
+        }
+        mediaEl.className = "carousel-image";
+        mediaEl.style.opacity = 0;
+        mediaContainer.appendChild(mediaEl);
+
+        setTimeout(() => {
+          mediaEl.style.opacity = 1;
+          dateEl.textContent = moment.date;
+          descEl.textContent = moment.desc;
+          dateEl.style.opacity = 1;
+          descEl.style.opacity = 1;
+        }, 300);
+      }
+
+      function prev() {
+        index = (index - 1 + momentos.length) % momentos.length;
+        showMoment(index);
+      }
+
+      function next() {
+        index = (index + 1) % momentos.length;
+        showMoment(index);
+      }
+
+      function toggleAudio() {
+        if (musicaAtiva) {
+          musica.pause();
+          musicaAtiva = false;
+          musicBtn.textContent = "🎵 Ativar Música";
+        } else {
+          musica.play();
+          musicaAtiva = true;
+          musicBtn.textContent = "🔇 Pausar Música";
+        }
+      }
+
+      function escreverMensagem(texto) {
+        const el = document.getElementById("typing");
+        el.innerHTML = "";
+        let i = 0;
+        function digitar() {
+          if (i < texto.length) {
+            el.innerHTML += texto.charAt(i);
+            i++;
+            setTimeout(digitar, 60);
+          }
+        }
+        digitar();
+      }
+
+      function diasJuntos() {
+        const inicio = new Date("2025-03-04");
+        const hoje = new Date();
+        const diff = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24));
+        document.getElementById(
+          "contador"
+        ).textContent = `${diff} dias com você 💘`;
+      }
+
+      function createHearts(qty) {
+        const heartsContainer = document.querySelector(".hearts");
+        for (let i = 0; i < qty; i++) {
+          const heart = document.createElement("div");
+          heart.classList.add("heart");
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.animationDuration = 7 + Math.random() * 5 + "s";
+          heart.style.animationDelay = Math.random() * 15 + "s";
+          heartsContainer.appendChild(heart);
+        }
+      }
+
+      window.onload = () => {
+        showMoment(index);
+        escreverMensagem(
+          "Toda história de amor tem seu começo... e a nossa merece ser lembrada."
+        );
+        diasJuntos();
+        createHearts(25);
+      };
+    </script>
+  </body>
+</html>
